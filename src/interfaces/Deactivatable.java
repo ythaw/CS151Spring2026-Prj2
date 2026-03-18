@@ -1,5 +1,5 @@
 package interfaces;
 
-public class Deactivatable {
+public interface Deactivatable {
     
 }
