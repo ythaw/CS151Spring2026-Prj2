@@ -1,4 +1,4 @@
-package main.system;
+package system;
 
 public class RegistrationSystem {
     
