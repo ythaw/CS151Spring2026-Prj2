@@ -1,4 +1,4 @@
-package main.interfaces;
+package interfaces;
 
 public class Deactivatable {
     
