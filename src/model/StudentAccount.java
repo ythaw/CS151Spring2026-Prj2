@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentAccount {
+public class StudentAccount extends Account{
     private String major;
     private int currentCredits;
     private List<Section> enrolledSections;
@@ -22,5 +22,32 @@ public class StudentAccount {
         total += s.getCredits();
       }
       return total;
+    }
+
+    public boolean hasTimeConflict(Section target){
+      for (Section s : enrolledSections){
+        if (s.conflictsWith(target)) return true;
+      }
+      return false;
+    }
+
+    public void addSection(Section section){
+      
+    }
+
+    public void dropSection(Section section){
+
+    }
+
+    public void addCompletedCourse(Course course){
+
+    }
+
+    public List<Section> getSectionsByTerm(String term){
+      return new ArrayList<>();
+    }
+
+    public boolean canEnrollIn(Section section){
+      return false;
     }
 }
