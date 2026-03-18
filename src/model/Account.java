@@ -1,5 +1,5 @@
 package model;
 
-public class Account {
+public abstract class Account {
     
 }
