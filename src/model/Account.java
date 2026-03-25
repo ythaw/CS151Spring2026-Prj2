@@ -1,4 +1,4 @@
-package abstracts;
+package model;
 
 import interfaces.Deactivatable;
 
