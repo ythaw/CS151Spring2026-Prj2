@@ -123,7 +123,7 @@ public class StudentAccount extends Account {
 
     @Override
     public String toString() {
-        return "[Student] " + getName() + " (ID: " + getAccount() + ") | Major: " + major
+        return "[Student] " + getName() + " (ID: " + getAccountId() + ") | Major: " + major
                 + " | Credits: " + currentCredits + " | Status: " + getStatus();
     }
 }
