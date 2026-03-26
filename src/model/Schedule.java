@@ -18,6 +18,19 @@ public class Schedule {
 
     // Constructor to create a schedule
     public Schedule(Set<String> days, int startMinutes, int endMinutes, String location) {
+		 if (days == null || days.isEmpty()) {
+            throw new IllegalArgumentException("Days cannot be empty.");
+        }
+        if (startMinutes < 0) {
+            throw new IllegalArgumentException("Start time cannot be negative.");
+        }
+        if (endMinutes <= startMinutes) {
+            throw new IllegalArgumentException("End time must be after start time.");
+        }
+        if (location == null || location.trim().isEmpty()) {
+            throw new IllegalArgumentException("Location cannot be empty.");
+        }
+        
         this.days = new HashSet<>(days);
         this.startMinutes = startMinutes;
         this.endMinutes = endMinutes;
