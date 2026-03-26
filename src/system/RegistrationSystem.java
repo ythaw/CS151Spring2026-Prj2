@@ -153,17 +153,18 @@ public class RegistrationSystem {
         }
     }
 
-    public List<Section> listSectionsByCourse(String courseCode) {
+    public List<Section> listSectionsByCourse(String courseCode, String term) {
         List<Section> result = new ArrayList<>();
 
         for (Section section : sections.values()) {
-            if (section.getCourse().getCourseCode().equals(courseCode)) {
+            if (section.getCourse().getCourseCode().equals(courseCode) && section.getTerm().equalsIgnoreCase(term)) {
                 result.add(section);
             }
         }
         return result;
     }
 
+    /** 
     public List<Section> listSectionsByTerm(String term) {
         List<Section> result = new ArrayList<>();
 
@@ -172,9 +173,9 @@ public class RegistrationSystem {
                 result.add(section);
             }
         }
-
         return result;
     }
+    */
 
     public void loadSampleData() {
         // Create students
