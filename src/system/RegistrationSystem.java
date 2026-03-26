@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
 import java.util.List;
 
 import model.StudentAccount;
@@ -21,6 +20,8 @@ public class RegistrationSystem {
     private Map<String, ProfessorAccount> professors;
     private Map<String, Course> courses;
     private Map<String, Section> sections;
+
+    private static final int MAX_INSTANCES = 100;
 
     // constructor
     public RegistrationSystem() {
@@ -48,14 +49,26 @@ public class RegistrationSystem {
     }
 
     public void registerStudent(StudentAccount student) {
+        if (students.size() >= MAX_INSTANCES) {
+            System.out.println("Cannot add more students. Limit reached.");
+            return;
+        }
         students.put(student.getAccountId(), student);
     }
 
     public void registerProfessor(ProfessorAccount professor) {
+        if (professors.size() >= MAX_INSTANCES) {
+            System.out.println("Cannot add more professors. Limit reached.");
+            return;
+        }
         professors.put(professor.getAccountId(), professor);
     }
 
     public void addCourse(Course course) {
+        if (courses.size() >= MAX_INSTANCES) {
+            System.out.println("Cannot add more courses. Limit reached.");
+            return;
+        }
         courses.put(course.getCourseCode(), course);
     }
 
@@ -76,6 +89,10 @@ public class RegistrationSystem {
     }
 
     public void addSection(Section section) {
+        if (sections.size() >= MAX_INSTANCES) {
+            System.out.println("Cannot add more sections. Limit reached.");
+            return;
+        }
         sections.put(section.getSectionId(), section);
     }
 
@@ -88,7 +105,7 @@ public class RegistrationSystem {
 
         // Remove section from all enrolled students
         List<StudentAccount> enrolledCopy = new ArrayList<>(section.getEnrolledStudents());
-        try{
+        try {
             for (StudentAccount student : enrolledCopy) {
                 student.dropSection(section);
             }
