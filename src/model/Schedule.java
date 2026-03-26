@@ -18,7 +18,7 @@ public class Schedule {
 
     // Constructor to create a schedule
     public Schedule(Set<String> days, int startMinutes, int endMinutes, String location) {
-		 if (days == null || days.isEmpty()) {
+		if (days == null || days.isEmpty()) {
             throw new IllegalArgumentException("Days cannot be empty.");
         }
         if (startMinutes < 0) {
