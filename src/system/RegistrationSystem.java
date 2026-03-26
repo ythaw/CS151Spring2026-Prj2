@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+
 import java.util.List;
 
 import model.StudentAccount;
@@ -42,7 +44,6 @@ public class RegistrationSystem {
                 return p;
             }
         }
-
         return null;
     }
 
@@ -59,7 +60,19 @@ public class RegistrationSystem {
     }
 
     public void removeCourse(String courseCode) {
+        List<String> sectionIdsToRemove = new ArrayList<>();
 
+        for (Section section : sections.values()) {
+            if (section.getCourse().getCourseCode().equals(courseCode)) {
+                sectionIdsToRemove.add(section.getSectionId());
+            }
+        }
+
+        for (String sectionId : sectionIdsToRemove) {
+            removeSection(sectionId);
+        }
+
+        courses.remove(courseCode);
     }
 
     public void addSection(Section section) {
@@ -67,15 +80,60 @@ public class RegistrationSystem {
     }
 
     public void removeSection(String sectionId) {
+        Section section = sections.get(sectionId);
 
+        if (section == null) {
+            return;
+        }
+
+        // Remove section from all enrolled students
+        List<StudentAccount> enrolledCopy = new ArrayList<>(section.getEnrolledStudents());
+        try{
+            for (StudentAccount student : enrolledCopy) {
+                student.dropSection(section);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Remove section from professor
+        ProfessorAccount professor = section.getInstructor();
+        if (professor != null) {
+            professor.removeSection(section);
+        }
+
+        // Finally remove from system map
+        sections.remove(sectionId);
     }
 
     public void enrollStudentInSection(String studentId, String sectionId) {
+        StudentAccount student = students.get(studentId);
+        Section section = sections.get(sectionId);
 
+        if (student == null || section == null) {
+            return;
+        }
+        try {
+            student.addSection(section);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void dropStudentInSection(String studentId, String sectionId) {
+    public void dropStudentFromSection(String studentId, String sectionId) {
+        StudentAccount student = students.get(studentId);
+        Section section = sections.get(sectionId);
 
+        if (student == null || section == null) {
+            return;
+        }
+
+        try {
+            student.dropSection(section);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+
+        }
     }
 
     public List<Section> listSectionsByCourse(String courseCode) {
@@ -123,5 +181,15 @@ public class RegistrationSystem {
         // Create section
         Section sec1 = new Section("SEC1", c1, p1, sched1, "Fall", 30);
         sections.put(sec1.getSectionId(), sec1);
+    }
+
+    public String getSystemSummary() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== Registration System Summary ===\n");
+        sb.append("Total Students: ").append(students.size()).append("\n");
+        sb.append("Total Professors: ").append(professors.size()).append("\n");
+        sb.append("Total Courses: ").append(courses.size()).append("\n");
+        sb.append("Total Sections: ").append(sections.size()).append("\n");
+        return sb.toString();
     }
 }
