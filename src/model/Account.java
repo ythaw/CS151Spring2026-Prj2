@@ -58,11 +58,16 @@ public abstract class Account implements Deactivatable {
         if (newEmail == null || newEmail.trim().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be empty.");
         }
-        this.email = newEmail;
+        String trimmed = newEmail.trim();
+        if (!hasValidEmail(trimmed)) {
+            throw new IllegalArgumentException("Email format is invalid (must contain '@' and '.').");
+        }
+        this.email = trimmed;
     }
 
+
     // Check if email format is valid
-    public boolean hasValidEmail() {
+    public boolean hasValidEmail(String email) {
         return email != null && email.contains("@") && email.contains(".");
     }
 

@@ -119,6 +119,11 @@ public class ProfessorAccount extends Account {
     }
 
     @Override
+    public String getContactCard() {
+        return super.getContactCard() + "\nRole: " + getRole() + "\nDepartment: " + department;
+    }
+
+    @Override
     public String toString() {
         return "Professor ID: " + getAccountId()
                 + ", Name: " + getName()
