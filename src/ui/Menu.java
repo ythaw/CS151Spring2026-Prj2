@@ -52,10 +52,8 @@ public class Menu {
 			System.out.print("Enter name: ");
 			String name = getInput();
 
-			if (name.isEmpty()) {
+			if (name.isBlank()) {
 				System.out.println("Error: Name cannot be empty.");
-			} else if (!name.matches("[A-Za-z .'-]+")) {
-				System.out.println("Error: Name contains invalid characters.");
 			} else {
 				return name;
 			}

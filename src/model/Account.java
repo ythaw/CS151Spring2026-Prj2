@@ -12,9 +12,10 @@ public abstract class Account implements Deactivatable {
 
     public Account(String accountId, String name, String email, String password) {
 		
-    if (accountId == null || accountId.trim().isEmpty()) {
+	if (accountId == null || accountId.trim().isEmpty()) {
         throw new IllegalArgumentException("Account ID cannot be empty.");
     }
+
     if (name == null) {
         throw new IllegalArgumentException("Name cannot be empty.");
     }
@@ -22,22 +23,22 @@ public abstract class Account implements Deactivatable {
     if (name.isEmpty()) {
         throw new IllegalArgumentException("Name cannot be empty.");
     }
-    if (!name.matches("[A-Za-z .'-]+")) {
-        throw new IllegalArgumentException("Name contains invalid characters.");
-    }
+
     if (email == null || email.trim().isEmpty()) {
         throw new IllegalArgumentException("Email cannot be empty.");
     }
+    email = email.trim();
     if (!email.contains("@") || !email.contains(".")) {
         throw new IllegalArgumentException("Email format is invalid.");
     }
+
     if (password == null || password.trim().isEmpty()) {
         throw new IllegalArgumentException("Password cannot be empty.");
     }
 
     this.accountId = accountId.trim();
     this.name = name;
-    this.email = email.trim();
+    this.email = email;
     this.password = password;
     this.active = true;
     this.deactivationReason = "";
