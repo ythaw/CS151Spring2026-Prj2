@@ -46,7 +46,49 @@ public class Menu {
             System.out.println("Input cannot be empty. Try again.");
         }
     }
+    
+	private String promptValidName() {
+		while (true) {
+			System.out.print("Enter name: ");
+			String name = getInput();
 
+			if (name.isEmpty()) {
+				System.out.println("Error: Name cannot be empty.");
+			} else if (!name.matches("[A-Za-z .'-]+")) {
+				System.out.println("Error: Name contains invalid characters.");
+			} else {
+				return name;
+			}
+		}
+	}
+
+	private String promptValidEmail() {
+		while (true) {
+			System.out.print("Enter email: ");
+			String email = getInput();
+
+			if (email.isEmpty()) {
+				System.out.println("Error: Email cannot be empty.");
+			} else if (!email.contains("@") || !email.contains(".")) {
+				System.out.println("Error: Invalid email format.");
+			} else {
+				return email;
+			}
+		}
+	}
+
+	private String promptValidPassword() {
+		while (true) {
+			System.out.print("Enter password: ");
+			String password = getInput();
+
+			if (password.isEmpty()) {
+				System.out.println("Error: Password cannot be empty.");
+			} else {
+				return password;
+			}
+		}
+	}
 
     private boolean showMainMenu() {
         System.out.println("\n========================================");
@@ -426,35 +468,49 @@ public class Menu {
 
     // STUDENT
     private void registerStudentAccount() {
-        try {
-            String id = promptNonEmpty("Enter student ID: ");
-            String name = promptNonEmpty("Enter name: ");
-            String email = promptNonEmpty("Enter email: ");
-            String password = promptNonEmpty("Enter password: ");
-            String major = promptNonEmpty("Enter major: ");
+		while (true) {
+			try {
+				String id = promptNonEmpty("Enter student ID: ");
 
-            StudentAccount student = new StudentAccount(id, name, email, password, major);
-            system.registerStudent(student);
-            System.out.println("Student account created successfully.");
-        } catch (Exception e) {
-            System.out.println("Could not create student account: " + e.getMessage());
-        }
+				String name = promptValidName();
+				String email = promptValidEmail();
+				String password = promptValidPassword();
+
+				String major = promptNonEmpty("Enter major: ");
+
+				StudentAccount student = new StudentAccount(id, name, email, password, major);
+				system.registerStudent(student);
+
+				System.out.println("Student account created successfully.");
+				return;
+
+			} catch (IllegalArgumentException e) {
+				System.out.println("Error: " + e.getMessage());
+				System.out.println("Please try again.");
+			}
+		}
     }
 
     private void registerProfessorAccount() {
-        try {
-            String id = promptNonEmpty("Enter professor ID: ");
-            String name = promptNonEmpty("Enter name: ");
-            String email = promptNonEmpty("Enter email: ");
-            String password = promptNonEmpty("Enter password: ");
-            String department = promptNonEmpty("Enter department: ");
+		while (true) {
+			try {
+				String id = promptNonEmpty("Enter professor ID: ");
+				String name = promptValidName();
+				String email = promptValidEmail();
+				String password = promptValidPassword();
+				String department = promptNonEmpty("Enter department: ");
 
-            ProfessorAccount professor = new ProfessorAccount(id, name, email, password, department);
-            system.registerProfessor(professor);
-            System.out.println("Professor account created successfully.");
-        } catch (Exception e) {
-            System.out.println("Could not create professor account: " + e.getMessage());
-        }
+				ProfessorAccount professor = new ProfessorAccount(id, name, email, password, department);
+				system.registerProfessor(professor);
+
+				System.out.println("Professor account created successfully.");
+				return;
+
+			} catch (IllegalArgumentException e) {
+				System.out.println("Error: " + e.getMessage());
+				System.out.println("Please try again.");
+			}
+		}
     }
 
     private void viewCurrentSchedule(StudentAccount student) {
