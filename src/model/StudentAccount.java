@@ -27,6 +27,7 @@ public class StudentAccount extends Account {
         for (Section s : enrolledSections) {
             total += s.getCourse().getCredits();
         }
+        setCurrentCredits(total);
         return total;
     }
 
@@ -42,21 +43,12 @@ public class StudentAccount extends Account {
     public void addSection(Section section)
             throws InactiveEntityException, ScheduleConflictException,
                    PrerequisiteNotMetException, CourseFullException {
-        if (!section.isActive()) {
-            throw new InactiveEntityException("Section " + section.getSectionId() + " is not active.");
+        if(canEnrollIn(section)){
+            enrolledSections.add(section);
+            section.enrollStudent(this);
+            setCurrentCredits(currentCredits + section.getCourse().getCredits());
         }
-        if (hasTimeConflict(section)) {
-            throw new ScheduleConflictException("Schedule conflict with section " + section.getSectionId() + ".");
-        }
-        if (!section.getCourse().prerequisitesMetBy(completedCourses)) {
-            throw new PrerequisiteNotMetException("Prerequisites not met for " + section.getCourse().getTitle() + ".");
-        }
-        if (!section.hasSeatAvailable()) {
-            throw new CourseFullException("Section " + section.getSectionId() + " is full.");
-        }
-        enrolledSections.add(section);
-        section.enrollStudent(this);
-        currentCredits += section.getCourse().getCredits();
+
     }
 
     // Drops a section and updates credit count
@@ -66,7 +58,7 @@ public class StudentAccount extends Account {
         }
         enrolledSections.remove(section);
         section.dropStudent(this);
-        currentCredits -= section.getCourse().getCredits();
+        setCurrentCredits(currentCredits - section.getCourse().getCredits());
     }
 
     // Adds a course to the student's completed courses if not already there
@@ -88,16 +80,31 @@ public class StudentAccount extends Account {
     }
 
     // Returns true if the student can enroll in the given section
-    public boolean canEnrollIn(Section section) {
-        return section.isActive()
-                && !hasTimeConflict(section)
-                && section.getCourse().prerequisitesMetBy(completedCourses)
-                && section.hasSeatAvailable();
+    public boolean canEnrollIn(Section section) throws InactiveEntityException, ScheduleConflictException,
+                                  PrerequisiteNotMetException, CourseFullException {
+        if (!section.isActive()) {
+            throw new InactiveEntityException("Section " + section.getSectionId() + " is not active.");
+        }
+        if (hasTimeConflict(section)) {
+            throw new ScheduleConflictException("Schedule conflict with section " + section.getSectionId() + ".");
+        }
+        if (!section.getCourse().prerequisitesMetBy(completedCourses)) {
+            throw new PrerequisiteNotMetException("Prerequisites not met for " + section.getCourse().getTitle() + ".");
+        }
+        if (!section.hasSeatAvailable()) {
+            throw new CourseFullException("Section " + section.getSectionId() + " is full.");
+        }
+        return true;
     }
 
     @Override
     public String getRole() {
         return "Student";
+    }
+
+    @Override
+    public String getContactCard() {
+        return super.getContactCard() + "\nRole: " + getRole() + "\nMajor: " + major;
     }
 
     // Getters
