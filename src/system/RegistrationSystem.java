@@ -7,6 +7,11 @@ import java.util.Set;
 
 import java.util.List;
 
+import exceptions.CourseFullException;
+import exceptions.InactiveEntityException;
+import exceptions.PrerequisiteNotMetException;
+import exceptions.ScheduleConflictException;
+
 import model.StudentAccount;
 import model.ProfessorAccount;
 import model.Schedule;
@@ -96,6 +101,38 @@ public class RegistrationSystem {
         sections.put(section.getSectionId(), section);
     }
 
+    public StudentAccount getStudentById(String studentId) {
+        return students.get(studentId);
+    }
+
+    public ProfessorAccount getProfessorById(String professorId) {
+        return professors.get(professorId);
+    }
+
+    public Course getCourseByCode(String courseCode) {
+        return courses.get(courseCode);
+    }
+
+    public Section getSectionById(String sectionId) {
+        return sections.get(sectionId);
+    }
+
+    public List<StudentAccount> getAllStudents() {
+        return new ArrayList<>(students.values());
+    }
+
+    public List<ProfessorAccount> getAllProfessors() {
+        return new ArrayList<>(professors.values());
+    }
+
+    public List<Course> getAllCourses() {
+        return new ArrayList<>(courses.values());
+    }
+
+    public List<Section> getAllSections() {
+        return new ArrayList<>(sections.values());
+    }
+
     public void removeSection(String sectionId) {
         Section section = sections.get(sectionId);
 
@@ -123,16 +160,65 @@ public class RegistrationSystem {
         sections.remove(sectionId);
     }
 
+    public void assignProfessorToSection(String professorId, String sectionId) {
+        ProfessorAccount professor = professors.get(professorId);
+        Section section = sections.get(sectionId);
+
+        if (professor == null || section == null) {
+            throw new IllegalArgumentException("Invalid professor or section ID.");
+        }
+
+        if (!section.isActive()) {
+            throw new IllegalArgumentException("Cannot assign professor to an inactive section.");
+        }
+
+        if (!professor.canTeachSection(section)) {
+            throw new IllegalArgumentException("Professor schedule conflicts with this section.");
+        }
+
+        ProfessorAccount previousInstructor = section.getInstructor();
+        if (previousInstructor != null) {
+            previousInstructor.removeSection(section);
+        }
+
+        section.setInstructor(professor);
+        professor.assignSection(section);
+    }
+
+    public void deactivateSection(String sectionId, String reason) {
+        Section section = sections.get(sectionId);
+        if (section == null) {
+            throw new IllegalArgumentException("Section not found.");
+        }
+        section.deactivate(reason);
+    }
+
+    public void activateSection(String sectionId) {
+        Section section = sections.get(sectionId);
+        if (section == null) {
+            throw new IllegalArgumentException("Section not found.");
+        }
+        section.activate();
+    }
+
     public void enrollStudentInSection(String studentId, String sectionId) {
         StudentAccount student = students.get(studentId);
         Section section = sections.get(sectionId);
 
-        if (student == null || section == null) {
-            return;
-        }
         try {
+            if (student == null || section == null) {
+                throw new IllegalArgumentException("Invalid student or section ID.");
+            }
             student.addSection(section);
-        } catch (Exception e) {
+        } catch (InactiveEntityException e) {
+            System.out.println(e.getMessage());
+        } catch (ScheduleConflictException e) {
+            System.out.println(e.getMessage());
+        } catch (PrerequisiteNotMetException e) {
+            System.out.println(e.getMessage());
+        } catch (CourseFullException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -141,15 +227,15 @@ public class RegistrationSystem {
         StudentAccount student = students.get(studentId);
         Section section = sections.get(sectionId);
 
-        if (student == null || section == null) {
-            return;
-        }
-
         try {
+            if (student == null || section == null) {
+                throw new IllegalArgumentException("Invalid student or section ID.");
+            }
             student.dropSection(section);
-        } catch (Exception e) {
+        } catch (InactiveEntityException e) {
             System.out.println(e.getMessage());
-
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -164,8 +250,11 @@ public class RegistrationSystem {
         return result;
     }
 
-    /** 
     public List<Section> listSectionsByTerm(String term) {
+        if (term == null || term.trim().isEmpty()) {
+            throw new IllegalArgumentException("Term cannot be empty.");
+        }
+
         List<Section> result = new ArrayList<>();
 
         for (Section section : sections.values()) {
@@ -175,7 +264,6 @@ public class RegistrationSystem {
         }
         return result;
     }
-    */
 
     public void loadSampleData() {
         // Create students
