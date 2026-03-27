@@ -35,7 +35,13 @@ public class RegistrationSystem {
         courses = new HashMap<>();
         sections = new HashMap<>();
     }
-
+    
+    //Helper method
+	public boolean accountIdExists(String accountId) {
+		return students.containsKey(accountId)
+				|| professors.containsKey(accountId);
+	}
+	
     public Account authenticate(String accountId, String password) {
         if (students.containsKey(accountId)) {
             StudentAccount s = students.get(accountId);
@@ -58,7 +64,10 @@ public class RegistrationSystem {
             System.out.println("Cannot add more students. Limit reached.");
             return;
         }
-        students.put(student.getAccountId(), student);
+        if (accountIdExists(student.getAccountId())) {
+			throw new IllegalArgumentException("Account ID already exists.");
+		}
+		students.put(student.getAccountId(), student);
     }
 
     public void registerProfessor(ProfessorAccount professor) {
@@ -66,7 +75,10 @@ public class RegistrationSystem {
             System.out.println("Cannot add more professors. Limit reached.");
             return;
         }
-        professors.put(professor.getAccountId(), professor);
+        if (accountIdExists(professor.getAccountId())) {
+			throw new IllegalArgumentException("Account ID already exists.");
+		}
+		professors.put(professor.getAccountId(), professor);
     }
 
     public void addCourse(Course course) {
