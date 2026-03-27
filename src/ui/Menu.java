@@ -89,7 +89,19 @@ public class Menu {
 			}
 		}
 	}
+	
+	private String promptUniqueAccountId(String prompt) {
+		while (true) {
+			String id = promptNonEmpty(prompt);
 
+			if (system.accountIdExists(id)) {
+				System.out.println("Error: Account ID already exists.");
+			} else {
+				return id;
+			}
+		}
+	}
+	
     private boolean showMainMenu() {
         System.out.println("\n========================================");
         System.out.println(" UNIVERSITY COURSE REGISTRATION SYSTEM");
@@ -470,7 +482,7 @@ public class Menu {
     private void registerStudentAccount() {
 		while (true) {
 			try {
-				String id = promptNonEmpty("Enter student ID: ");
+				String id = promptUniqueAccountId("Enter student ID: ");
 
 				String name = promptValidName();
 				String email = promptValidEmail();
@@ -494,7 +506,7 @@ public class Menu {
     private void registerProfessorAccount() {
 		while (true) {
 			try {
-				String id = promptNonEmpty("Enter professor ID: ");
+				String id = promptUniqueAccountId("Enter professor ID: ");
 				String name = promptValidName();
 				String email = promptValidEmail();
 				String password = promptValidPassword();
