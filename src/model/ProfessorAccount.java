@@ -14,7 +14,7 @@ public class ProfessorAccount extends Account {
             throw new IllegalArgumentException("Department cannot be empty.");
         }
 
-        this.department = department;
+        this.department = department.trim();
         this.teachingSections = new ArrayList<>();
     }
 
