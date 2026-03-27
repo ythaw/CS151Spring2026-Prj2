@@ -52,7 +52,7 @@ public class Menu {
 			System.out.print("Enter name: ");
 			String name = getInput();
 
-			if (name.isBlank()) {
+			if (name.isEmpty()) {
 				System.out.println("Error: Name cannot be empty.");
 			} else {
 				return name;
