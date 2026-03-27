@@ -11,25 +11,37 @@ public abstract class Account implements Deactivatable {
     protected String deactivationReason;
 
     public Account(String accountId, String name, String email, String password) {
-        if (accountId == null || accountId.trim().isEmpty()) {
-            throw new IllegalArgumentException("Account ID cannot be empty.");
-        }
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty.");
-        }
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Email cannot be empty.");
-        }
-        if (password == null || password.trim().isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be empty.");
-        }
+		
+    if (accountId == null || accountId.trim().isEmpty()) {
+        throw new IllegalArgumentException("Account ID cannot be empty.");
+    }
+    if (name == null) {
+        throw new IllegalArgumentException("Name cannot be empty.");
+    }
+    name = name.trim();
+    if (name.isEmpty()) {
+        throw new IllegalArgumentException("Name cannot be empty.");
+    }
+    if (!name.matches("[A-Za-z .'-]+")) {
+        throw new IllegalArgumentException("Name contains invalid characters.");
+    }
+    if (email == null || email.trim().isEmpty()) {
+        throw new IllegalArgumentException("Email cannot be empty.");
+    }
+    if (!email.contains("@") || !email.contains(".")) {
+        throw new IllegalArgumentException("Email format is invalid.");
+    }
+    if (password == null || password.trim().isEmpty()) {
+        throw new IllegalArgumentException("Password cannot be empty.");
+    }
 
-        this.accountId = accountId;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.active = true;
-        this.deactivationReason = "";
+    this.accountId = accountId.trim();
+    this.name = name;
+    this.email = email.trim();
+    this.password = password;
+    this.active = true;
+    this.deactivationReason = "";
+    
     }
 
     // Login account

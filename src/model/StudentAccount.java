@@ -15,7 +15,12 @@ public class StudentAccount extends Account {
 
     public StudentAccount(String accountId, String name, String email, String password, String major) {
         super(accountId, name, email, password);
-        this.major = major;
+        
+        if (major == null || major.trim().isEmpty()) {
+        throw new IllegalArgumentException("Major cannot be empty.");
+		}
+    
+        this.major = major.trim();
         this.currentCredits = 0;
         this.enrolledSections = new ArrayList<>();
         this.completedCourses = new ArrayList<>();
