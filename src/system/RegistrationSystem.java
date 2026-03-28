@@ -310,4 +310,18 @@ public class RegistrationSystem {
         sb.append("Total Sections: ").append(sections.size()).append("\n");
         return sb.toString();
     }
+    
+	public void removeStudent(String id) {
+		if (!students.containsKey(id)) {
+			throw new IllegalArgumentException("Student not found.");
+		}
+		students.remove(id);
+	}
+
+	public void removeProfessor(String id) {
+		if (!professors.containsKey(id)) {
+			throw new IllegalArgumentException("Professor not found.");
+		}
+		professors.remove(id);
+	}
 }
