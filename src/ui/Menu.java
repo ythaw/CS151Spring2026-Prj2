@@ -466,29 +466,33 @@ public class Menu {
         }
     }
 
-    private void showManageRegistrationMenu() {
-        while (true) {
-            System.out.println("\n-------- MANAGE REGISTRATION --------");
-            System.out.println("1. Enroll Student in Section");
-            System.out.println("2. Drop Student from Section");
-            System.out.println("3. Back");
+	private void showManageRegistrationMenu() {
+		while (true) {
+			System.out.println("\n-------- MANAGE REGISTRATION --------");
+			System.out.println("1. Enroll Student in Section");
+			System.out.println("2. Drop Student from Section");
+			System.out.println("3. View Section Schedule and Registered Students");
+			System.out.println("4. Back");
 
-            String choice = promptNonEmpty("Enter choice: ");
+			String choice = promptNonEmpty("Enter choice: ");
 
-            switch (choice) {
-                case "1":
-                    enrollStudentByAdmin();
-                    break;
-                case "2":
-                    dropStudentByAdmin();
-                    break;
-                case "3":
-                    return;
-                default:
-                    System.out.println("Invalid choice.");
-            }
-        }
-    }
+			switch (choice) {
+				case "1":
+					enrollStudentByAdmin();
+					break;
+				case "2":
+					dropStudentByAdmin();
+					break;
+				case "3":
+					viewSectionRegistrationStatus();
+					break;
+				case "4":
+					return;
+				default:
+					System.out.println("Invalid choice.");
+			}
+		}
+	}
 
     private void showReportsMenu() {
         while (true) {
@@ -1300,6 +1304,45 @@ public class Menu {
 			System.out.println("Student dropped.");
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
+		}
+	}
+	
+	private void viewSectionRegistrationStatus() {
+		List<Section> sections = system.getAllSections();
+
+		if (sections.isEmpty()) {
+			System.out.println("No sections found.");
+			return;
+		}
+
+		System.out.println("\n--- SECTION REGISTRATION DETAILS ---");
+
+		for (Section section : sections) {
+			String instructorName = (section.getInstructor() == null)
+					? "TBA"
+					: section.getInstructor().getName();
+
+			String scheduleInfo = (section.getSchedule() == null)
+					? ""
+					: section.getSchedule().toDisplayString();
+
+			List<StudentAccount> students = section.getEnrolledStudents();
+
+			System.out.println("Section ID: " + section.getSectionId());
+			System.out.println("Course: " + section.getCourse());
+			System.out.println("Instructor: " + instructorName);
+			System.out.println("Schedule: " + scheduleInfo);
+			System.out.println("Students Registered:");
+
+			if (students.isEmpty()) {
+				System.out.println();
+			} else {
+				for (StudentAccount student : students) {
+					System.out.println("- " + student.getName() + " (" + student.getAccountId() + ")");
+				}
+			}
+
+			System.out.println("-----------------------------------");
 		}
 	}
 }
