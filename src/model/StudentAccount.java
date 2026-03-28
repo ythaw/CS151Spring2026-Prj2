@@ -133,9 +133,13 @@ public class StudentAccount extends Account {
         this.currentCredits = currentCredits;
     }
 
-    @Override
-    public String toString() {
-        return "[Student] " + getName() + " (ID: " + getAccountId() + ") | Major: " + major
-                + " | Credits: " + currentCredits + " | Status: " + getStatus();
-    }
+	@Override
+	public String toString() {
+		return "[Student] " + getName()
+				+ " (ID: " + getAccountId() + ")"
+				+ " | Email: " + getEmail()
+				+ " | Major: " + major
+				+ " | Credits: " + calculateCurrentCreditLoad()
+				+ " | Status: " + getStatus();
+	}
 }
