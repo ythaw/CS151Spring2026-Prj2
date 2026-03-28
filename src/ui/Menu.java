@@ -101,29 +101,40 @@ public class Menu {
 	}
 	
     private boolean showMainMenu() {
-        System.out.println("\n========================================");
-        System.out.println(" UNIVERSITY COURSE REGISTRATION SYSTEM");
-        System.out.println("========================================");
-        System.out.println("1. Login");
-        System.out.println("2. Create Account");
-        System.out.println("3. Exit");
+		System.out.println("\n========================================");
+		System.out.println(" UNIVERSITY COURSE REGISTRATION SYSTEM");
+		System.out.println("========================================");
+		System.out.println("1. Login");
+		System.out.println("2. Create Account");
+		System.out.println("3. Exit");
+		System.out.println("(Type EXIT anytime to quit)");
+		System.out.print("Enter choice: ");
 
-        String choice = promptNonEmpty("Enter choice: ");
+		String input = getInput();
 
-        switch (choice) {
-            case "1":
-                handleLogin();
-                return true;
-            case "2":
-                showCreateAccountMenu();
-                return true;
-            case "3":
-                System.out.println("Goodbye!");
-                return false;
-            default:
-                System.out.println("Invalid choice.");
-                return true;
-        }
+		int choice;
+		try {
+			choice = Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid input. Please enter a number.");
+			return true; // keep running
+		}
+
+		switch (choice) {
+			case 1:
+				handleLogin();
+				break;
+			case 2:
+				showCreateAccountMenu();
+				break;
+			case 3:
+				System.out.println("Exiting...");
+				return false; // stop program
+			default:
+				System.out.println("Invalid choice.");
+		}
+
+		return true; // continue loop
     }
 
     private void handleLogin() {
@@ -323,29 +334,45 @@ public class Menu {
         }
     }
 
-    private void showManageAccountsMenu() {
-        while (true) {
-            System.out.println("\n---------- MANAGE ACCOUNTS ----------");
-            System.out.println("1. Register Student Account");
-            System.out.println("2. Register Professor Account");
-            System.out.println("3. Back");
+	private void showManageAccountsMenu() {
+		while (true) {
+			System.out.println("\n---------- MANAGE ACCOUNTS ----------");
+			System.out.println("1. Register Student Account");
+			System.out.println("2. Register Professor Account");
+			System.out.println("3. View All Students");
+			System.out.println("4. View All Professors");
+			System.out.println("5. Delete Student");
+			System.out.println("6. Delete Professor");
+			System.out.println("7. Back");
 
-            String choice = promptNonEmpty("Enter choice: ");
+			String choice = promptNonEmpty("Enter choice: ");
 
-            switch (choice) {
-                case "1":
-                    registerStudentAccount();
-                    break;
-                case "2":
-                    registerProfessorAccount();
-                    break;
-                case "3":
-                    return;
-                default:
-                    System.out.println("Invalid choice.");
-            }
-        }
-    }
+			switch (choice) {
+				case "1":
+					registerStudentAccount();
+					break;
+				case "2":
+					registerProfessorAccount();
+					break;
+				case "3":
+					viewAllStudents();
+					break;
+				case "4":
+					viewAllProfessors();
+					break;
+				case "5":
+					deleteStudentAccount();
+					break;
+				case "6":
+					deleteProfessorAccount();
+					break;
+				case "7":
+					return;
+				default:
+					System.out.println("Invalid choice.");
+			}
+		}
+	}
 
     private void showManageCoursesMenu() {
         while (true) {
@@ -1004,4 +1031,54 @@ public class Menu {
             System.out.println("Could not change password: " + e.getMessage());
         }
     }
+    
+	private void viewAllStudents() {
+		List<StudentAccount> students = system.getAllStudents();
+
+		if (students.isEmpty()) {
+			System.out.println("No students found.");
+			return;
+		}
+
+		System.out.println("\n--- STUDENT LIST ---");
+		for (StudentAccount s : students) {
+			System.out.println(s);
+		}
+	}
+
+	private void viewAllProfessors() {
+		List<ProfessorAccount> professors = system.getAllProfessors();
+
+		if (professors.isEmpty()) {
+			System.out.println("No professors found.");
+			return;
+		}
+
+		System.out.println("\n--- PROFESSOR LIST ---");
+		for (ProfessorAccount p : professors) {
+			System.out.println(p);
+		}
+	}
+
+	private void deleteStudentAccount() {
+		String id = promptNonEmpty("Enter student ID to delete: ");
+
+		try {
+			system.removeStudent(id);
+			System.out.println("Student deleted.");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
+
+	private void deleteProfessorAccount() {
+		String id = promptNonEmpty("Enter professor ID to delete: ");
+
+		try {
+			system.removeProfessor(id);
+			System.out.println("Professor deleted.");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
 }
