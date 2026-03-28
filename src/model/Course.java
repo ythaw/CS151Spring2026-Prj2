@@ -45,7 +45,7 @@ public class Course {
                 + description;
     }
 
-    public boolean isValidCreditValue() {
+    public boolean isValidCreditValue(int credits) {
         return credits > 0 && credits <= 6;
     }
 
@@ -72,7 +72,7 @@ public class Course {
     }
 
     public void setCredits(int credits) {
-        if (credits <= 0 || credits > 6) {
+        if (!isValidCreditValue(credits)) {
             throw new IllegalArgumentException("Credits must be between 1 and 6.");
         }
         this.credits = credits;

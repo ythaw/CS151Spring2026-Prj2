@@ -243,7 +243,7 @@ public class Menu {
 					handleChangePassword(student);
 					break;
 				case "12":
-					System.out.println("Logging out...");
+					student.logout();
 					return;
 				default:
 					System.out.println("Invalid choice.");
@@ -308,7 +308,8 @@ public class Menu {
 					handleChangePassword(professor);
 					break;
 				case "13":
-					System.out.println("Logging out...");
+					professor.logout();
+
 					return;
 				default:
 					System.out.println("Invalid choice.");
@@ -472,7 +473,8 @@ public class Menu {
 			System.out.println("1. Enroll Student in Section");
 			System.out.println("2. Drop Student from Section");
 			System.out.println("3. View Section Schedule and Registered Students");
-			System.out.println("4. Back");
+			System.out.println("4. Record Completed Course for Student");
+			System.out.println("5. Back");
 
 			String choice = promptNonEmpty("Enter choice: ");
 
@@ -487,6 +489,9 @@ public class Menu {
 					viewSectionRegistrationStatus();
 					break;
 				case "4":
+					recordCompletedCourseByAdmin();
+					break;
+				case "5":
 					return;
 				default:
 					System.out.println("Invalid choice.");
@@ -629,16 +634,23 @@ public class Menu {
     private void handleEnrollInSection(StudentAccount student) {
         String sectionId = promptNonEmpty("Enter section ID to enroll: ");
 
-        try {
-            system.enrollStudentInSection(student.getAccountId(), sectionId);
-            System.out.println("Enrollment request processed.");
-        } catch (Exception e) {
-            System.out.println("Could not enroll: " + e.getMessage());
+        if (system.enrollStudentInSection(student.getAccountId(), sectionId)) {
+            System.out.println("Enrollment successful.");
         }
     }
 
     private void handleDropSection(StudentAccount student) {
         String sectionId = promptNonEmpty("Enter section ID to drop: ");
+
+        Section section = system.getSectionById(sectionId);
+        if (section == null) {
+            System.out.println("Section not found.");
+            return;
+        }
+        if (!section.isStudentEnrolled(student)) {
+            System.out.println("You are not enrolled in that section.");
+            return;
+        }
 
         try {
             system.dropStudentFromSection(student.getAccountId(), sectionId);
@@ -651,15 +663,25 @@ public class Menu {
     // PROFESSOR
     private void viewTeachingSections(ProfessorAccount professor) {
         List<Section> sections = professor.getTeachingSections();
-
-        System.out.println("\n--- TEACHING SECTIONS ---");
         if (sections.isEmpty()) {
             System.out.println("No assigned teaching sections.");
             return;
         }
-
-        for (Section section : sections) {
-            System.out.println(section);
+        String term = promptNonEmpty("Enter term(e.g., Fall, (if all terms, enter 'all')): ");
+        System.out.println("\n--- TEACHING SECTIONS ---");
+        if(term.equalsIgnoreCase("all")) {
+            for (Section section : sections) {
+                System.out.println(section);
+            }
+        } else {
+            sections = professor.getSectionsByTerm(term);
+            if(sections.isEmpty()) {
+                System.out.println("No sections found for that term.");
+                return;
+            }
+            for (Section section : sections) {
+                System.out.println(section);
+            }
         }
     }
 
@@ -678,16 +700,9 @@ public class Menu {
 
         String sectionId = promptNonEmpty("Enter section ID to view roster: ");
 
-        Section selected = null;
-        for (Section section : sections) {
-            if (section.getSectionId().equalsIgnoreCase(sectionId)) {
-                selected = section;
-                break;
-            }
-        }
-
+        Section selected = system.getSectionById(sectionId);
         if (selected == null) {
-            System.out.println("Section not found in your teaching assignments.");
+            System.out.println("Section not found.");
             return;
         }
 
@@ -981,11 +996,8 @@ public class Menu {
         String studentId = promptNonEmpty("Enter student ID: ");
         String sectionId = promptNonEmpty("Enter section ID: ");
 
-        try {
-            system.enrollStudentInSection(studentId, sectionId);
-            System.out.println("Enrollment request processed.");
-        } catch (Exception e) {
-            System.out.println("Could not enroll student: " + e.getMessage());
+        if (system.enrollStudentInSection(studentId, sectionId)) {
+            System.out.println("Enrollment successful.");
         }
     }
 
@@ -999,6 +1011,12 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("Could not drop student: " + e.getMessage());
         }
+    }
+
+    private void recordCompletedCourseByAdmin() {
+        String studentId = promptNonEmpty("Enter student ID: ");
+        String courseCode = promptNonEmpty("Enter course code: ");
+        system.addCompletedCourseForStudent(studentId, courseCode);
     }
 
     private void listSectionsByCourse() {
@@ -1120,7 +1138,7 @@ public class Menu {
 		}
 
 		for (Section section : sections) {
-			System.out.println(section);
+			System.out.println(section.toString());
 			System.out.println("-----------------------------------");
 		}
 	}
@@ -1287,17 +1305,47 @@ public class Menu {
 		String sectionId = promptNonEmpty("Enter section ID: ");
 		String studentId = promptNonEmpty("Enter student ID: ");
 
-		try {
-			system.enrollStudentInSection(studentId, sectionId);
-			System.out.println("Student enrolled.");
-		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
+		Section section = system.getSectionById(sectionId);
+		if (section == null) {
+			System.out.println("Section not found.");
+			return;
+		}
+		if (!section.isTaughtBy(professor)) {
+			System.out.println("You can only enroll students in sections you teach.");
+			return;
+		}
+		if (system.getStudentById(studentId) == null) {
+			System.out.println("Student not found.");
+			return;
+		}
+
+		if (system.enrollStudentInSection(studentId, sectionId)) {
+			System.out.println("Enrollment successful.");
 		}
 	}
 	
 	private void dropStudentByProfessor(ProfessorAccount professor) {
 		String sectionId = promptNonEmpty("Enter section ID: ");
 		String studentId = promptNonEmpty("Enter student ID: ");
+
+		Section section = system.getSectionById(sectionId);
+		if (section == null) {
+			System.out.println("Section not found.");
+			return;
+		}
+		if (!section.isTaughtBy(professor)) {
+			System.out.println("You can only drop students from sections you teach.");
+			return;
+		}
+		StudentAccount student = system.getStudentById(studentId);
+		if (student == null) {
+			System.out.println("Student not found.");
+			return;
+		}
+		if (!section.isStudentEnrolled(student)) {
+			System.out.println("That student is not enrolled in this section.");
+			return;
+		}
 
 		try {
 			system.dropStudentFromSection(studentId, sectionId);

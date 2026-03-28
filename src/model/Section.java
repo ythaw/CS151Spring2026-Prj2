@@ -175,6 +175,9 @@ public class Section implements Deactivatable {
         if (schedule == null) {
             throw new IllegalArgumentException("Schedule cannot be null.");
         }
+        if(!schedule.isValid()) {
+            throw new IllegalArgumentException("Schedule is not valid.");
+        }
         this.schedule = schedule;
     }
 
@@ -195,11 +198,11 @@ public class Section implements Deactivatable {
 		String scheduleInfo = (schedule == null) ? "TBA" : schedule.toDisplayString();
 
 		return "Section ID: " + sectionId
-				+ ", Course: " + course
-				+ ", Term: " + term
-				+ ", Instructor: " + instructorName
-				+ ", Schedule: " + scheduleInfo
-				+ ", Seats Remaining: " + seatsRemaining()
-				+ ", Status: " + getStatus();
+				+ "| Course: " + course
+				+ "| Term: " + term + "\n"
+				+ "Instructor: " + instructorName
+				+ "| Schedule: " + scheduleInfo 
+				+ "\nSeats Remaining: " + seatsRemaining()
+				+ "| Status: " + getStatus();
 	}
 }

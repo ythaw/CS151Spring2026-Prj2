@@ -39,7 +39,7 @@ public class Schedule {
 
     // Check whether this schedule overlaps with another schedule
     public boolean overlaps(Schedule other) {
-        if (other == null) {
+        if (!isValid() || other == null || !other.isValid()) {
             return false;
         }
 
@@ -73,13 +73,9 @@ public class Schedule {
 
     // Return a readable string for display
     public String toDisplayString() {
-        return days + " " + formatTime(startMinutes) + " - " + formatTime(endMinutes) + " @ " + location;
+        return days + " " + formatTime(startMinutes) + " - " + formatTime(endMinutes) + "|Duration: " + durationMinutes() + "min @ " + location;
     }
 
-    // Check if the schedule happens on a specific day
-    public boolean occursOnDay(String day) {
-        return days.contains(day);
-    }
 
     // Helper method to convert minutes into HH:MM format
     private String formatTime(int totalMinutes) {
