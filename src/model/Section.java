@@ -189,14 +189,17 @@ public class Section implements Deactivatable {
         this.capacity = capacity;
     }
 
-    // Return section information
-    @Override
-    public String toString() {
-        return "Section ID: " + sectionId
-                + ", Course: " + course
-                + ", Term: " + term
-                + ", Instructor: " + (instructor != null ? instructor.getName() : "TBA")
-                + ", Seats Remaining: " + seatsRemaining()
-                + ", Status: " + getStatus();
-    }
+	@Override
+	public String toString() {
+		String instructorName = (instructor == null) ? "TBA" : instructor.getName();
+		String scheduleInfo = (schedule == null) ? "TBA" : schedule.toDisplayString();
+
+		return "Section ID: " + sectionId
+				+ ", Course: " + course
+				+ ", Term: " + term
+				+ ", Instructor: " + instructorName
+				+ ", Schedule: " + scheduleInfo
+				+ ", Seats Remaining: " + seatsRemaining()
+				+ ", Status: " + getStatus();
+	}
 }
