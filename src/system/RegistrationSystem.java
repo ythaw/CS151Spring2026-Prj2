@@ -113,16 +113,34 @@ public class RegistrationSystem {
         sections.put(section.getSectionId(), section);
     }
 
-    public StudentAccount getStudentById(String studentId) {
-        return students.get(studentId);
-    }
-
     public ProfessorAccount getProfessorById(String professorId) {
         return professors.get(professorId);
     }
 
+    public StudentAccount getStudentById(String studentId) {
+        return students.get(studentId);
+    }
+
     public Course getCourseByCode(String courseCode) {
         return courses.get(courseCode);
+    }
+
+    /** Records that a student has completed a course  */
+    public void addCompletedCourseForStudent(String studentId, String courseCode) {
+        StudentAccount student = students.get(studentId);
+        Course course = courses.get(courseCode);
+
+        if (student == null) {
+            System.out.println("Student not found: " + studentId);
+            return;
+        }
+        if (course == null) {
+            System.out.println("Course not found: " + courseCode);
+            return;
+        }
+
+        student.addCompletedCourse(course);
+        System.out.println("Recorded completed course " + courseCode + " for " + student.getName() + ".");
     }
 
     public Section getSectionById(String sectionId) {
@@ -213,25 +231,35 @@ public class RegistrationSystem {
         section.activate();
     }
 
-    public void enrollStudentInSection(String studentId, String sectionId) {
+    /**
+     * @return true if enrollment succeeded; false if validation failed (message printed).
+     */
+    public boolean enrollStudentInSection(String studentId, String sectionId) {
         StudentAccount student = students.get(studentId);
         Section section = sections.get(sectionId);
 
         try {
             if (student == null || section == null) {
-                throw new IllegalArgumentException("Invalid student or section ID.");
+                System.out.println("Invalid student or section ID.");
+                return false;
             }
             student.addSection(section);
+            return true;
         } catch (InactiveEntityException e) {
             System.out.println(e.getMessage());
+            return false;
         } catch (ScheduleConflictException e) {
             System.out.println(e.getMessage());
+            return false;
         } catch (PrerequisiteNotMetException e) {
             System.out.println(e.getMessage());
+            return false;
         } catch (CourseFullException e) {
             System.out.println(e.getMessage());
+            return false;
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
 
@@ -294,11 +322,12 @@ public class RegistrationSystem {
         courses.put(c1.getCourseCode(), c1);
 
         // Create schedule
-        Schedule sched1 = new Schedule(Set.of("Monday", "Wednesday", "Friday"), 0, 45, "Room 101");
+        Schedule sched1 = new Schedule(Set.of("Monday", "Wednesday", "Friday"), 570, 645, "Room 101");
 
         // Create section
         Section sec1 = new Section("SEC1", c1, p1, sched1, "Fall", 30);
         sections.put(sec1.getSectionId(), sec1);
+        p1.assignSection(sec1);
     }
 
     public String getSystemSummary() {

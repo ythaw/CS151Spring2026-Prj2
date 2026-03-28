@@ -48,9 +48,9 @@ public class StudentAccount extends Account {
     public void addSection(Section section)
             throws InactiveEntityException, ScheduleConflictException,
                    PrerequisiteNotMetException, CourseFullException {
-        if(canEnrollIn(section)){
-            enrolledSections.add(section);
+        if (canEnrollIn(section)) {
             section.enrollStudent(this);
+            enrolledSections.add(section);
             setCurrentCredits(currentCredits + section.getCourse().getCredits());
         }
 
@@ -87,6 +87,12 @@ public class StudentAccount extends Account {
     // Returns true if the student can enroll in the given section
     public boolean canEnrollIn(Section section) throws InactiveEntityException, ScheduleConflictException,
                                   PrerequisiteNotMetException, CourseFullException {
+        if (section == null) {
+            throw new IllegalArgumentException("Section cannot be null.");
+        }
+        if (enrolledSections.contains(section)) {
+            throw new IllegalArgumentException("You are already enrolled in section " + section.getSectionId() + ".");
+        }
         if (!section.isActive()) {
             throw new InactiveEntityException("Section " + section.getSectionId() + " is not active.");
         }
