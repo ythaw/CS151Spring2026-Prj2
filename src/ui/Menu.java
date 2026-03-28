@@ -193,57 +193,61 @@ public class Menu {
     private void showStudentMenu(StudentAccount student) {
         while (true) {
             System.out.println("\n=========== STUDENT MENU ===========");
-            System.out.println("1. View Profile");
-            System.out.println("2. View Current Schedule");
-            System.out.println("3. View Schedule by Term");
-            System.out.println("4. View Completed Courses");
-            System.out.println("5. View Credit Load");
-            System.out.println("6. Enroll in Section");
-            System.out.println("7. Drop Section");
-            System.out.println("8. View Contact Card");
-            System.out.println("9. Update Email");
-            System.out.println("10. Change Password");
-            System.out.println("11. Logout");
+			System.out.println("1. View Profile");
+			System.out.println("2. View All Available Sections");
+			System.out.println("3. View Current Schedule");
+			System.out.println("4. View Schedule by Term");
+			System.out.println("5. View Completed Courses");
+			System.out.println("6. View Credit Load");
+			System.out.println("7. Enroll in Section");
+			System.out.println("8. Drop Section");
+			System.out.println("9. View Contact Card");
+			System.out.println("10. Update Email");
+			System.out.println("11. Change Password");
+			System.out.println("12. Logout");
 
             String choice = promptNonEmpty("Enter choice: ");
 
-            switch (choice) {
-                case "1":
-                    System.out.println(student);
-                    break;
-                case "2":
-                    viewCurrentSchedule(student);
-                    break;
-                case "3":
-                    viewScheduleByTerm(student);
-                    break;
-                case "4":
-                    viewCompletedCourses(student);
-                    break;
-                case "5":
-                    System.out.println("Current credit load: " + student.calculateCurrentCreditLoad());
-                    break;
-                case "6":
-                    handleEnrollInSection(student);
-                    break;
-                case "7":
-                    handleDropSection(student);
-                    break;
-                case "8":
-                    System.out.println(student.getContactCard());
-                    break;
-                case "9":
-                    handleUpdateEmail(student);
-                    break;
-                case "10":
-                    handleChangePassword(student);
-                    break;
-                case "11":
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Invalid choice.");
-            }
+			switch (choice) {
+				case "1":
+					System.out.println(student);
+					break;
+				case "2":
+					viewAllSectionsForStudent();
+					break;
+				case "3":
+					viewCurrentSchedule(student);
+					break;
+				case "4":
+					viewScheduleByTerm(student);
+					break;
+				case "5":
+					viewCompletedCourses(student);
+					break;
+				case "6":
+					System.out.println("Current credit load: " + student.calculateCurrentCreditLoad());
+					break;
+				case "7":
+					handleEnrollInSection(student);
+					break;
+				case "8":
+					handleDropSection(student);
+					break;
+				case "9":
+					System.out.println(student.getContactCard());
+					break;
+				case "10":
+					handleUpdateEmail(student);
+					break;
+				case "11":
+					handleChangePassword(student);
+					break;
+				case "12":
+					System.out.println("Logging out...");
+					return;
+				default:
+					System.out.println("Invalid choice.");
+			}
         }
     }
 
@@ -1079,6 +1083,21 @@ public class Menu {
 			System.out.println("Professor deleted.");
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
+		}
+	}
+	
+	private void viewAllSectionsForStudent() {
+		List<Section> sections = system.getAllSections();
+
+		System.out.println("\n--- ALL AVAILABLE SECTIONS ---");
+		if (sections.isEmpty()) {
+			System.out.println("No sections found.");
+			return;
+		}
+
+		for (Section section : sections) {
+			System.out.println(section);
+			System.out.println("-----------------------------------");
 		}
 	}
 }
