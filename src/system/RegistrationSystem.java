@@ -35,13 +35,13 @@ public class RegistrationSystem {
         courses = new HashMap<>();
         sections = new HashMap<>();
     }
-    
-    //Helper method
-	public boolean accountIdExists(String accountId) {
-		return students.containsKey(accountId)
-				|| professors.containsKey(accountId);
-	}
-	
+
+    // Helper method
+    public boolean accountIdExists(String accountId) {
+        return students.containsKey(accountId)
+                || professors.containsKey(accountId);
+    }
+
     public Account authenticate(String accountId, String password) {
         if (students.containsKey(accountId)) {
             StudentAccount s = students.get(accountId);
@@ -65,9 +65,9 @@ public class RegistrationSystem {
             return;
         }
         if (accountIdExists(student.getAccountId())) {
-			throw new IllegalArgumentException("Account ID already exists.");
-		}
-		students.put(student.getAccountId(), student);
+            throw new IllegalArgumentException("Account ID already exists.");
+        }
+        students.put(student.getAccountId(), student);
     }
 
     public void registerProfessor(ProfessorAccount professor) {
@@ -76,9 +76,9 @@ public class RegistrationSystem {
             return;
         }
         if (accountIdExists(professor.getAccountId())) {
-			throw new IllegalArgumentException("Account ID already exists.");
-		}
-		professors.put(professor.getAccountId(), professor);
+            throw new IllegalArgumentException("Account ID already exists.");
+        }
+        professors.put(professor.getAccountId(), professor);
     }
 
     public void addCourse(Course course) {
@@ -258,22 +258,20 @@ public class RegistrationSystem {
             System.out.println(e.getMessage());
             return false;
         }
+
+        student.addSection(section);
     }
 
-    public void dropStudentFromSection(String studentId, String sectionId) {
+    public void dropStudentFromSection(String studentId, String sectionId)
+            throws InactiveEntityException {
         StudentAccount student = students.get(studentId);
         Section section = sections.get(sectionId);
 
-        try {
-            if (student == null || section == null) {
-                throw new IllegalArgumentException("Invalid student or section ID.");
-            }
-            student.dropSection(section);
-        } catch (InactiveEntityException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        if (student == null || section == null) {
+            throw new IllegalArgumentException("Invalid student or section ID.");
         }
+
+        student.dropSection(section);
     }
 
     public List<Section> listSectionsByCourse(String courseCode, String term) {
@@ -322,7 +320,7 @@ public class RegistrationSystem {
         Schedule sched1 = new Schedule(Set.of("Monday", "Wednesday", "Friday"), 570, 645, "Room 101");
 
         // Create section
-        Section sec1 = new Section("SEC1", c1, p1, sched1, "Fall", 30);
+        Section sec1 = new Section("SEC1", c1, null, sched1, "Fall", 30);
         sections.put(sec1.getSectionId(), sec1);
         p1.assignSection(sec1);
     }
@@ -336,18 +334,40 @@ public class RegistrationSystem {
         sb.append("Total Sections: ").append(sections.size()).append("\n");
         return sb.toString();
     }
-    
-	public void removeStudent(String id) {
-		if (!students.containsKey(id)) {
-			throw new IllegalArgumentException("Student not found.");
-		}
-		students.remove(id);
-	}
 
-	public void removeProfessor(String id) {
-		if (!professors.containsKey(id)) {
-			throw new IllegalArgumentException("Professor not found.");
-		}
-		professors.remove(id);
-	}
+    public void removeStudent(String id) {
+        StudentAccount student = students.get(id);
+
+        if (student == null) {
+            throw new IllegalArgumentException("Student not found.");
+        }
+
+        List<Section> enrolledCopy = new ArrayList<>(student.getEnrolledSections());
+        for (Section section : enrolledCopy) {
+            try {
+                student.dropSection(section);
+            } catch (Exception e) {
+                System.out.println("Could not fully remove student from section "
+                        + section.getSectionId() + ": " + e.getMessage());
+            }
+        }
+
+        students.remove(id);
+    }
+
+    public void removeProfessor(String id) {
+        ProfessorAccount professor = professors.get(id);
+
+        if (professor == null) {
+            throw new IllegalArgumentException("Professor not found.");
+        }
+
+        List<Section> teachingCopy = new ArrayList<>(professor.getTeachingSections());
+        for (Section section : teachingCopy) {
+            section.setInstructor(null);
+            professor.removeSection(section);
+        }
+
+        professors.remove(id);
+    }
 }
