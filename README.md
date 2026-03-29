@@ -169,14 +169,15 @@ java main.Main
 loadSampleData() runs at startup (via Menu).
 
 Sample logins
-| Role	    | ID	|Password|
-| Student	  |s1	  |pass    |
-| Student	  |s2	  |pass    |
-| Professor |p1	  |pass    |
+| Role	    | ID  	| Password |
+| --------- | ----- | ------ |
+| Student	  | s1	  | pass   |
+| Student	  | s2	  | pass   |
+| Professor | p1	  | pass   |
 
 Admin Login
-ID - admin
-Password - admin123
+* ID - admin
+* Password - admin123
 
 When the program starts, the main menu is displayed. Users can:
 
@@ -213,9 +214,10 @@ exit
 
 | Name          | Contributions                                                                                  |
 | ------------- | ---------------------------------------------------------------------------------------------- |
-|  Yin Phyu Phyu Thaw | Designed the overall system architecture and UML diagram. Implemented core functionality for Account, Course and Registration System classes. Contributed to and debugged the Menu (UI) and improved overall system stability. Identified and removed dead code, and implemented an exit-anywhere feature for better user experience. Contributed to writing and organizing the README file. |
 | Minh Long Hang| Implement and fixing bug relate to Student function relate, implement test unit for registration|
 | Thiha Ye Lin  | Built initial UML and system structure, developed early menu implementation, and contributed to testing and bug fixes.|
+| Yin Phyu Phyu Thaw | Designed the overall system architecture and UML diagram. Worked mainly on Account, Course and Registration System classes. Contributed to and debugged the Menu (UI) and improved overall system stability. Identified and removed dead code, and implemented an exit-anywhere feature. Contributed to writing and organizing the README file. |
+| Cong Si Van   | Implemented the ProfessorAccount and Section classes; added data validation features (preventing duplicate ID registrations and ensuring only valid data is accepted); improved overall system functionality; and contributed to comprehensive testing to ensure reliability in real-world scenarios. |                                                                                             
 
 ---
 
