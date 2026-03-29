@@ -231,9 +231,6 @@ public class RegistrationSystem {
         section.activate();
     }
 
-    /**
-     * @return true if enrollment succeeded; false if validation failed (message printed).
-     */
     public boolean enrollStudentInSection(String studentId, String sectionId) {
         StudentAccount student = students.get(studentId);
         Section section = sections.get(sectionId);
