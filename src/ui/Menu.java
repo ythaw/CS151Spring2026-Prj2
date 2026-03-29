@@ -209,113 +209,114 @@ public class Menu {
 
             String choice = promptNonEmpty("Enter choice: ");
 
-            switch (choice) {
-                case "1":
-                    System.out.println(student);
-                    break;
-                case "2":
-                    viewAllSectionsForStudent();
-                    break;
-                case "3":
-                    viewCurrentSchedule(student);
-                    break;
-                case "4":
-                    viewScheduleByTerm(student);
-                    break;
-                case "5":
-                    viewCompletedCourses(student);
-                    break;
-                case "6":
-                    System.out.println("Current credit load: " + student.calculateCurrentCreditLoad());
-                    break;
-                case "7":
-                    handleEnrollInSection(student);
-                    break;
-                case "8":
-                    handleDropSection(student);
-                    break;
-                case "9":
-                    System.out.println(student.getContactCard());
-                    break;
-                case "10":
-                    handleUpdateEmail(student);
-                    break;
-                case "11":
-                    handleChangePassword(student);
-                    break;
-                case "12":
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Invalid choice.");
-            }
+			switch (choice) {
+				case "1":
+					System.out.println(student);
+					break;
+				case "2":
+					viewAllSectionsForStudent();
+					break;
+				case "3":
+					viewCurrentSchedule(student);
+					break;
+				case "4":
+					viewScheduleByTerm(student);
+					break;
+				case "5":
+					viewCompletedCourses(student);
+					break;
+				case "6":
+					System.out.println("Current credit load: " + student.calculateCurrentCreditLoad());
+					break;
+				case "7":
+					handleEnrollInSection(student);
+					break;
+				case "8":
+					handleDropSection(student);
+					break;
+				case "9":
+					System.out.println(student.getContactCard());
+					break;
+				case "10":
+					handleUpdateEmail(student);
+					break;
+				case "11":
+					handleChangePassword(student);
+					break;
+				case "12":
+					student.logout();
+					return;
+				default:
+					System.out.println("Invalid choice.");
+			}
         }
     }
 
-    private void showProfessorMenu(ProfessorAccount professor) {
-        while (true) {
-            System.out.println("\n========== PROFESSOR MENU ==========");
-            System.out.println("1. View Profile");
-            System.out.println("2. View My Teaching Sections");
-            System.out.println("3. View All Sections");
-            System.out.println("4. Create New Section");
-            System.out.println("5. Register Existing TBA Section");
-            System.out.println("6. Enroll Student in My Section");
-            System.out.println("7. Drop Student from My Section");
-            System.out.println("8. View Teaching Load");
-            System.out.println("9. View Roster for a Section");
-            System.out.println("10. View Contact Card");
-            System.out.println("11. Update Email");
-            System.out.println("12. Change Password");
-            System.out.println("13. Logout");
+	private void showProfessorMenu(ProfessorAccount professor) {
+		while (true) {
+			System.out.println("\n========== PROFESSOR MENU ==========");
+			System.out.println("1. View Profile");
+			System.out.println("2. View My Teaching Sections");
+			System.out.println("3. View All Sections");
+			System.out.println("4. Create New Section");
+			System.out.println("5. Register Existing TBA Section");
+			System.out.println("6. Enroll Student in My Section");
+			System.out.println("7. Drop Student from My Section");
+			System.out.println("8. View Teaching Load");
+			System.out.println("9. View Roster for a Section");
+			System.out.println("10. View Contact Card");
+			System.out.println("11. Update Email");
+			System.out.println("12. Change Password");
+			System.out.println("13. Logout");
 
-            String choice = promptNonEmpty("Enter choice: ");
+			String choice = promptNonEmpty("Enter choice: ");
 
-            switch (choice) {
-                case "1":
-                    System.out.println(professor);
-                    break;
-                case "2":
-                    viewTeachingSections(professor);
-                    break;
-                case "3":
-                    viewAllSections();
-                    break;
-                case "4":
-                    createSectionForProfessor(professor);
-                    break;
-                case "5":
-                    registerExistingSectionForProfessor(professor);
-                    break;
-                case "6":
-                    enrollStudentByProfessor(professor);
-                    break;
-                case "7":
-                    dropStudentByProfessor(professor);
-                    break;
-                case "8":
-                    System.out.println("Teaching load: " + professor.calculateTeachingLoadCredits() + " credits");
-                    break;
-                case "9":
-                    viewRosterForProfessorSection(professor);
-                    break;
-                case "10":
-                    System.out.println(professor.getContactCard());
-                    break;
-                case "11":
-                    handleUpdateEmail(professor);
-                    break;
-                case "12":
-                    handleChangePassword(professor);
-                    break;
-                case "13":
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Invalid choice.");
-            }
-        }
-    }
+			switch (choice) {
+				case "1":
+					System.out.println(professor);
+					break;
+				case "2":
+					viewTeachingSections(professor);
+					break;
+				case "3":
+					viewAllSections();
+					break;
+				case "4":
+					createSectionForProfessor(professor);
+					break;
+				case "5":
+					registerExistingSectionForProfessor(professor);
+					break;
+				case "6":
+					enrollStudentByProfessor(professor);
+					break;
+				case "7":
+					dropStudentByProfessor(professor);
+					break;
+				case "8":
+					System.out.println("Teaching load: " + professor.calculateTeachingLoadCredits() + " credits");
+					break;
+				case "9":
+					viewRosterForProfessorSection(professor);
+					break;
+				case "10":
+					System.out.println(professor.getContactCard());
+					break;
+				case "11":
+					handleUpdateEmail(professor);
+					break;
+				case "12":
+					handleChangePassword(professor);
+					break;
+				case "13":
+					professor.logout();
+
+					return;
+				default:
+					System.out.println("Invalid choice.");
+			}
+		}
+	}
 
     private void showAdminMenu() {
         while (true) {
@@ -467,33 +468,37 @@ public class Menu {
         }
     }
 
-    private void showManageRegistrationMenu() {
-        while (true) {
-            System.out.println("\n-------- MANAGE REGISTRATION --------");
-            System.out.println("1. Enroll Student in Section");
-            System.out.println("2. Drop Student from Section");
-            System.out.println("3. View Section Schedule and Registered Students");
-            System.out.println("4. Back");
+	private void showManageRegistrationMenu() {
+		while (true) {
+			System.out.println("\n-------- MANAGE REGISTRATION --------");
+			System.out.println("1. Enroll Student in Section");
+			System.out.println("2. Drop Student from Section");
+			System.out.println("3. View Section Schedule and Registered Students");
+			System.out.println("4. Record Completed Course for Student");
+			System.out.println("5. Back");
 
-            String choice = promptNonEmpty("Enter choice: ");
+			String choice = promptNonEmpty("Enter choice: ");
 
-            switch (choice) {
-                case "1":
-                    enrollStudentByAdmin();
-                    break;
-                case "2":
-                    dropStudentByAdmin();
-                    break;
-                case "3":
-                    viewSectionRegistrationStatus();
-                    break;
-                case "4":
-                    return;
-                default:
-                    System.out.println("Invalid choice.");
-            }
-        }
-    }
+			switch (choice) {
+				case "1":
+					enrollStudentByAdmin();
+					break;
+				case "2":
+					dropStudentByAdmin();
+					break;
+				case "3":
+					viewSectionRegistrationStatus();
+					break;
+				case "4":
+					recordCompletedCourseByAdmin();
+					break;
+				case "5":
+					return;
+				default:
+					System.out.println("Invalid choice.");
+			}
+		}
+	}
 
     private void showReportsMenu() {
         while (true) {
@@ -630,16 +635,23 @@ public class Menu {
     private void handleEnrollInSection(StudentAccount student) {
         String sectionId = promptNonEmpty("Enter section ID to enroll: ");
 
-        try {
-            system.enrollStudentInSection(student.getAccountId(), sectionId);
-            System.out.println("Enrollment request processed.");
-        } catch (Exception e) {
-            System.out.println("Could not enroll: " + e.getMessage());
+        if (system.enrollStudentInSection(student.getAccountId(), sectionId)) {
+            System.out.println("Enrollment successful.");
         }
     }
 
     private void handleDropSection(StudentAccount student) {
         String sectionId = promptNonEmpty("Enter section ID to drop: ");
+
+        Section section = system.getSectionById(sectionId);
+        if (section == null) {
+            System.out.println("Section not found.");
+            return;
+        }
+        if (!section.isStudentEnrolled(student)) {
+            System.out.println("You are not enrolled in that section.");
+            return;
+        }
 
         try {
             system.dropStudentFromSection(student.getAccountId(), sectionId);
@@ -652,15 +664,25 @@ public class Menu {
     // PROFESSOR
     private void viewTeachingSections(ProfessorAccount professor) {
         List<Section> sections = professor.getTeachingSections();
-
-        System.out.println("\n--- TEACHING SECTIONS ---");
         if (sections.isEmpty()) {
             System.out.println("No assigned teaching sections.");
             return;
         }
-
-        for (Section section : sections) {
-            System.out.println(section);
+        String term = promptNonEmpty("Enter term(e.g., Fall, (if all terms, enter 'all')): ");
+        System.out.println("\n--- TEACHING SECTIONS ---");
+        if(term.equalsIgnoreCase("all")) {
+            for (Section section : sections) {
+                System.out.println(section);
+            }
+        } else {
+            sections = professor.getSectionsByTerm(term);
+            if(sections.isEmpty()) {
+                System.out.println("No sections found for that term.");
+                return;
+            }
+            for (Section section : sections) {
+                System.out.println(section);
+            }
         }
     }
 
@@ -679,16 +701,9 @@ public class Menu {
 
         String sectionId = promptNonEmpty("Enter section ID to view roster: ");
 
-        Section selected = null;
-        for (Section section : sections) {
-            if (section.getSectionId().equalsIgnoreCase(sectionId)) {
-                selected = section;
-                break;
-            }
-        }
-
+        Section selected = system.getSectionById(sectionId);
         if (selected == null) {
-            System.out.println("Section not found in your teaching assignments.");
+            System.out.println("Section not found.");
             return;
         }
 
@@ -983,11 +998,8 @@ public class Menu {
         String studentId = promptNonEmpty("Enter student ID: ");
         String sectionId = promptNonEmpty("Enter section ID: ");
 
-        try {
-            system.enrollStudentInSection(studentId, sectionId);
-            System.out.println("Enrollment request processed.");
-        } catch (Exception e) {
-            System.out.println("Could not enroll student: " + e.getMessage());
+        if (system.enrollStudentInSection(studentId, sectionId)) {
+            System.out.println("Enrollment successful.");
         }
     }
 
@@ -1001,6 +1013,12 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("Could not drop student: " + e.getMessage());
         }
+    }
+
+    private void recordCompletedCourseByAdmin() {
+        String studentId = promptNonEmpty("Enter student ID: ");
+        String courseCode = promptNonEmpty("Enter course code: ");
+        system.addCompletedCourseForStudent(studentId, courseCode);
     }
 
     private void listSectionsByCourse() {
@@ -1061,289 +1079,320 @@ public class Menu {
             System.out.println("Could not change password: " + e.getMessage());
         }
     }
+    
+	private void viewAllStudents() {
+		List<StudentAccount> students = system.getAllStudents();
 
-    private void viewAllStudents() {
-        List<StudentAccount> students = system.getAllStudents();
+		if (students.isEmpty()) {
+			System.out.println("No students found.");
+			return;
+		}
 
-        if (students.isEmpty()) {
-            System.out.println("No students found.");
-            return;
-        }
+		System.out.println("\n--- STUDENT LIST ---");
+		for (StudentAccount s : students) {
+			System.out.println(s);
+		}
+	}
 
-        System.out.println("\n--- STUDENT LIST ---");
-        for (StudentAccount s : students) {
-            System.out.println(s);
-        }
-    }
+	private void viewAllProfessors() {
+		List<ProfessorAccount> professors = system.getAllProfessors();
 
-    private void viewAllProfessors() {
-        List<ProfessorAccount> professors = system.getAllProfessors();
+		if (professors.isEmpty()) {
+			System.out.println("No professors found.");
+			return;
+		}
 
-        if (professors.isEmpty()) {
-            System.out.println("No professors found.");
-            return;
-        }
+		System.out.println("\n--- PROFESSOR LIST ---");
+		for (ProfessorAccount p : professors) {
+			System.out.println(p);
+		}
+	}
 
-        System.out.println("\n--- PROFESSOR LIST ---");
-        for (ProfessorAccount p : professors) {
-            System.out.println(p);
-        }
-    }
+	private void deleteStudentAccount() {
+		String id = promptNonEmpty("Enter student ID to delete: ");
 
-    private void deleteStudentAccount() {
-        String id = promptNonEmpty("Enter student ID to delete: ");
+		try {
+			system.removeStudent(id);
+			System.out.println("Student deleted.");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
 
-        try {
-            system.removeStudent(id);
-            System.out.println("Student deleted.");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
+	private void deleteProfessorAccount() {
+		String id = promptNonEmpty("Enter professor ID to delete: ");
 
-    private void deleteProfessorAccount() {
-        String id = promptNonEmpty("Enter professor ID to delete: ");
+		try {
+			system.removeProfessor(id);
+			System.out.println("Professor deleted.");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
+	
+	private void viewAllSectionsForStudent() {
+		List<Section> sections = system.getAllSections();
 
-        try {
-            system.removeProfessor(id);
-            System.out.println("Professor deleted.");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
+		System.out.println("\n--- ALL AVAILABLE SECTIONS ---");
+		if (sections.isEmpty()) {
+			System.out.println("No sections found.");
+			return;
+		}
 
-    private void viewAllSectionsForStudent() {
-        List<Section> sections = system.getAllSections();
+		for (Section section : sections) {
+			System.out.println(section.toString());
+			System.out.println("-----------------------------------");
+		}
+	}
+	
+	private void viewAllSections() {
+		List<Section> sections = system.getAllSections();
 
-        System.out.println("\n--- ALL AVAILABLE SECTIONS ---");
-        if (sections.isEmpty()) {
-            System.out.println("No sections found.");
-            return;
-        }
+		System.out.println("\n--- ALL SECTIONS ---");
+		if (sections.isEmpty()) {
+			System.out.println("No sections found.");
+			return;
+		}
 
-        for (Section section : sections) {
-            System.out.println(section);
-            System.out.println("-----------------------------------");
-        }
-    }
+		for (Section section : sections) {
+			System.out.println(section);
+			System.out.println("-----------------------------------");
+		}
+	}
+	
+	private void createSectionForProfessor(ProfessorAccount professor) {
+		try {
+			String sectionId = promptNonEmpty("Enter new section ID: ");
+			if (system.getSectionById(sectionId) != null) {
+				System.out.println("Section already exists.");
+				return;
+			}
 
-    private void viewAllSections() {
-        List<Section> sections = system.getAllSections();
+			String courseCode = promptNonEmpty("Enter course code: ");
+			Course course = system.getCourseByCode(courseCode);
 
-        System.out.println("\n--- ALL SECTIONS ---");
-        if (sections.isEmpty()) {
-            System.out.println("No sections found.");
-            return;
-        }
+			if (course == null) {
+				System.out.println("Course not found.");
+				return;
+			}
 
-        for (Section section : sections) {
-            System.out.println(section);
-            System.out.println("-----------------------------------");
-        }
-    }
+			String term = promptNonEmpty("Enter term (...., Fall): ");
 
-    private void createSectionForProfessor(ProfessorAccount professor) {
-        try {
-            String sectionId = promptNonEmpty("Enter new section ID: ");
-            if (system.getSectionById(sectionId) != null) {
-                System.out.println("Section already exists.");
-                return;
-            }
+			int capacity;
+			while (true) {
+				System.out.print("Enter capacity: ");
+				try {
+					capacity = Integer.parseInt(getInput());
+					if (capacity > 0) {
+						break;
+					}
+					System.out.println("Capacity must be positive.");
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter a valid number.");
+				}
+			}
 
-            String courseCode = promptNonEmpty("Enter course code: ");
-            Course course = system.getCourseByCode(courseCode);
+			String daysRaw = promptNonEmpty("Enter meeting days (comma-separated, e.g., Monday,Wednesday): ");
+			java.util.Set<String> days = new java.util.HashSet<>();
+			for (String d : daysRaw.split(",")) {
+				String day = d.trim();
+				if (!day.isEmpty()) {
+					days.add(day);
+				}
+			}
 
-            if (course == null) {
-                System.out.println("Course not found.");
-                return;
-            }
+			if (days.isEmpty()) {
+				System.out.println("Days cannot be empty.");
+				return;
+			}
 
-            String term = promptNonEmpty("Enter term (...., Fall): ");
+			int startHour;
+			while (true) {
+				System.out.print("Enter start hour (0-23): ");
+				try {
+					startHour = Integer.parseInt(getInput());
+					if (startHour >= 0 && startHour <= 23) {
+						break;
+					}
+					System.out.println("Hour must be between 0 and 23.");
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter a valid number.");
+				}
+			}
 
-            int capacity;
-            while (true) {
-                System.out.print("Enter capacity: ");
-                try {
-                    capacity = Integer.parseInt(getInput());
-                    if (capacity > 0) {
-                        break;
-                    }
-                    System.out.println("Capacity must be positive.");
-                } catch (NumberFormatException e) {
-                    System.out.println("Please enter a valid number.");
-                }
-            }
+			int startMin;
+			while (true) {
+				System.out.print("Enter start minute (0-59): ");
+				try {
+					startMin = Integer.parseInt(getInput());
+					if (startMin >= 0 && startMin <= 59) {
+						break;
+					}
+					System.out.println("Minute must be between 0 and 59.");
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter a valid number.");
+				}
+			}
 
-            String daysRaw = promptNonEmpty("Enter meeting days (comma-separated, e.g., Monday,Wednesday): ");
-            java.util.Set<String> days = new java.util.HashSet<>();
-            for (String d : daysRaw.split(",")) {
-                String day = d.trim();
-                if (!day.isEmpty()) {
-                    days.add(day);
-                }
-            }
+			int endHour;
+			while (true) {
+				System.out.print("Enter end hour (0-23): ");
+				try {
+					endHour = Integer.parseInt(getInput());
+					if (endHour >= 0 && endHour <= 23) {
+						break;
+					}
+					System.out.println("Hour must be between 0 and 23.");
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter a valid number.");
+				}
+			}
 
-            if (days.isEmpty()) {
-                System.out.println("Days cannot be empty.");
-                return;
-            }
+			int endMin;
+			while (true) {
+				System.out.print("Enter end minute (0-59): ");
+				try {
+					endMin = Integer.parseInt(getInput());
+					if (endMin >= 0 && endMin <= 59) {
+						break;
+					}
+					System.out.println("Minute must be between 0 and 59.");
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter a valid number.");
+				}
+			}
 
-            int startHour;
-            while (true) {
-                System.out.print("Enter start hour (0-23): ");
-                try {
-                    startHour = Integer.parseInt(getInput());
-                    if (startHour >= 0 && startHour <= 23) {
-                        break;
-                    }
-                    System.out.println("Hour must be between 0 and 23.");
-                } catch (NumberFormatException e) {
-                    System.out.println("Please enter a valid number.");
-                }
-            }
+			String location = promptNonEmpty("Enter room/location (.....,Room 101): ");
 
-            int startMin;
-            while (true) {
-                System.out.print("Enter start minute (0-59): ");
-                try {
-                    startMin = Integer.parseInt(getInput());
-                    if (startMin >= 0 && startMin <= 59) {
-                        break;
-                    }
-                    System.out.println("Minute must be between 0 and 59.");
-                } catch (NumberFormatException e) {
-                    System.out.println("Please enter a valid number.");
-                }
-            }
+			int startMinutes = startHour * 60 + startMin;
+			int endMinutes = endHour * 60 + endMin;
 
-            int endHour;
-            while (true) {
-                System.out.print("Enter end hour (0-23): ");
-                try {
-                    endHour = Integer.parseInt(getInput());
-                    if (endHour >= 0 && endHour <= 23) {
-                        break;
-                    }
-                    System.out.println("Hour must be between 0 and 23.");
-                } catch (NumberFormatException e) {
-                    System.out.println("Please enter a valid number.");
-                }
-            }
+			model.Schedule schedule = new model.Schedule(days, startMinutes, endMinutes, location);
 
-            int endMin;
-            while (true) {
-                System.out.print("Enter end minute (0-59): ");
-                try {
-                    endMin = Integer.parseInt(getInput());
-                    if (endMin >= 0 && endMin <= 59) {
-                        break;
-                    }
-                    System.out.println("Minute must be between 0 and 59.");
-                } catch (NumberFormatException e) {
-                    System.out.println("Please enter a valid number.");
-                }
-            }
+			Section section = new Section(sectionId, course, professor, schedule, term, capacity);
 
-            String location = promptNonEmpty("Enter room/location (.....,Room 101): ");
+			system.addSection(section);
+			professor.assignSection(section);
 
-            int startMinutes = startHour * 60 + startMin;
-            int endMinutes = endHour * 60 + endMin;
+			System.out.println("Section created successfully.");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
+	
+	private void registerExistingSectionForProfessor(ProfessorAccount professor) {
+		String sectionId = promptNonEmpty("Enter section ID to register: ");
 
-            model.Schedule schedule = new model.Schedule(days, startMinutes, endMinutes, location);
+		Section section = system.getSectionById(sectionId);
 
-            Section section = new Section(sectionId, course, null, schedule, term, capacity);
-            system.addSection(section);
-            system.assignProfessorToSection(professor.getAccountId(), sectionId);
+		if (section == null) {
+			System.out.println("Section not found.");
+			return;
+		}
 
-            System.out.println("Section created successfully.");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
+		if (section.getInstructor() != null) {
+			System.out.println("This section already has an instructor.");
+			return;
+		}
 
-    private void registerExistingSectionForProfessor(ProfessorAccount professor) {
-        String sectionId = promptNonEmpty("Enter section ID to register: ");
+		try {
+			system.assignProfessorToSection(professor.getAccountId(), sectionId);
+			System.out.println("Section registered successfully.");
+		} catch (Exception e) {
+			System.out.println("Could not register section: " + e.getMessage());
+		}
+	}
 
-        Section section = system.getSectionById(sectionId);
+	private void enrollStudentByProfessor(ProfessorAccount professor) {
+		String sectionId = promptNonEmpty("Enter section ID: ");
+		String studentId = promptNonEmpty("Enter student ID: ");
 
-        if (section == null) {
-            System.out.println("Section not found.");
-            return;
-        }
+		Section section = system.getSectionById(sectionId);
+		if (section == null) {
+			System.out.println("Section not found.");
+			return;
+		}
+		if (!section.isTaughtBy(professor)) {
+			System.out.println("You can only enroll students in sections you teach.");
+			return;
+		}
+		if (system.getStudentById(studentId) == null) {
+			System.out.println("Student not found.");
+			return;
+		}
 
-        if (section.getInstructor() != null) {
-            System.out.println("This section already has an instructor.");
-            return;
-        }
+		if (system.enrollStudentInSection(studentId, sectionId)) {
+			System.out.println("Enrollment successful.");
+		}
+	}
+	
+	private void dropStudentByProfessor(ProfessorAccount professor) {
+		String sectionId = promptNonEmpty("Enter section ID: ");
+		String studentId = promptNonEmpty("Enter student ID: ");
 
-        try {
-            system.assignProfessorToSection(professor.getAccountId(), sectionId);
-            System.out.println("Section registered successfully.");
-        } catch (Exception e) {
-            System.out.println("Could not register section: " + e.getMessage());
-        }
-    }
+		Section section = system.getSectionById(sectionId);
+		if (section == null) {
+			System.out.println("Section not found.");
+			return;
+		}
+		if (!section.isTaughtBy(professor)) {
+			System.out.println("You can only drop students from sections you teach.");
+			return;
+		}
+		StudentAccount student = system.getStudentById(studentId);
+		if (student == null) {
+			System.out.println("Student not found.");
+			return;
+		}
+		if (!section.isStudentEnrolled(student)) {
+			System.out.println("That student is not enrolled in this section.");
+			return;
+		}
 
-    private void enrollStudentByProfessor(ProfessorAccount professor) {
-        String sectionId = promptNonEmpty("Enter section ID: ");
-        String studentId = promptNonEmpty("Enter student ID: ");
+		try {
+			system.dropStudentFromSection(studentId, sectionId);
+			System.out.println("Student dropped.");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
+	
+	private void viewSectionRegistrationStatus() {
+		List<Section> sections = system.getAllSections();
 
-        try {
-            system.enrollStudentInSection(studentId, sectionId);
-            System.out.println("Student enrolled.");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
+		if (sections.isEmpty()) {
+			System.out.println("No sections found.");
+			return;
+		}
 
-    private void dropStudentByProfessor(ProfessorAccount professor) {
-        String sectionId = promptNonEmpty("Enter section ID: ");
-        String studentId = promptNonEmpty("Enter student ID: ");
+		System.out.println("\n--- SECTION REGISTRATION DETAILS ---");
 
-        try {
-            system.dropStudentFromSection(studentId, sectionId);
-            System.out.println("Student dropped.");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
+		for (Section section : sections) {
+			String instructorName = (section.getInstructor() == null)
+					? "TBA"
+					: section.getInstructor().getName();
 
-    private void viewSectionRegistrationStatus() {
-        List<Section> sections = system.getAllSections();
+			String scheduleInfo = (section.getSchedule() == null)
+					? ""
+					: section.getSchedule().toDisplayString();
 
-        if (sections.isEmpty()) {
-            System.out.println("No sections found.");
-            return;
-        }
+			List<StudentAccount> students = section.getEnrolledStudents();
 
-        System.out.println("\n--- SECTION REGISTRATION DETAILS ---");
+			System.out.println("Section ID: " + section.getSectionId());
+			System.out.println("Course: " + section.getCourse());
+			System.out.println("Instructor: " + instructorName);
+			System.out.println("Schedule: " + scheduleInfo);
+			System.out.println("Students Registered:");
 
-        for (Section section : sections) {
-            String instructorName = (section.getInstructor() == null)
-                    ? "TBA"
-                    : section.getInstructor().getName();
+			if (students.isEmpty()) {
+				System.out.println();
+			} else {
+				for (StudentAccount student : students) {
+					System.out.println("- " + student.getName() + " (" + student.getAccountId() + ")");
+				}
+			}
 
-            String scheduleInfo = (section.getSchedule() == null)
-                    ? ""
-                    : section.getSchedule().toDisplayString();
-
-            List<StudentAccount> students = section.getEnrolledStudents();
-
-            System.out.println("Section ID: " + section.getSectionId());
-            System.out.println("Course: " + section.getCourse());
-            System.out.println("Instructor: " + instructorName);
-            System.out.println("Schedule: " + scheduleInfo);
-            System.out.println("Students Registered:");
-
-            if (students.isEmpty()) {
-                System.out.println();
-            } else {
-                for (StudentAccount student : students) {
-                    System.out.println("- " + student.getName() + " (" + student.getAccountId() + ")");
-                }
-            }
-
-            System.out.println("-----------------------------------");
-        }
-    }
+			System.out.println("-----------------------------------");
+		}
+	}
 }
