@@ -166,7 +166,7 @@ java main.Main
 
 ## Usage
 
-loadSampleData() runs at startup (via Menu).
+Sample Data can be loaded by logging into admin account and choosing "6. Load Sample Data" option
 
 Sample logins
 | Role	    | ID  	| Password |

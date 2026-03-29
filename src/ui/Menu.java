@@ -17,8 +17,6 @@ public class Menu {
     public Menu() {
         scanner = new Scanner(System.in);
         system = new RegistrationSystem();
-        system.loadSampleData();
-
     }
 
     public void start() {
@@ -142,7 +140,7 @@ public class Menu {
         String id = promptNonEmpty("Enter ID: ");
         String password = promptNonEmpty("Enter password: ");
 
-        // Hardcoded admin login for now
+        // Hardcoded admin login
         if (id.equals("admin") && password.equals("admin123")) {
             System.out.println("Admin login successful!");
             showAdminMenu();
