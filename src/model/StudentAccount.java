@@ -32,7 +32,6 @@ public class StudentAccount extends Account {
         for (Section s : enrolledSections) {
             total += s.getCourse().getCredits();
         }
-        setCurrentCredits(total);
         return total;
     }
 
