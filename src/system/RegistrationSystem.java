@@ -258,8 +258,6 @@ public class RegistrationSystem {
             System.out.println(e.getMessage());
             return false;
         }
-
-        student.addSection(section);
     }
 
     public void dropStudentFromSection(String studentId, String sectionId)
