@@ -218,7 +218,7 @@ exit
 | Name          |                                                                                                |
 |  Yin Phyu Phyu Thaw | Designed the overall system architecture and UML diagram. Implemented core functionality for Account, Course and Registration System classes. Contributed to and debugged the Menu (UI) and improved overall system stability. Identified and removed dead code, and implemented an exit-anywhere feature for better user experience. Contributed to writing and organizing the README file. |
 | Minh Long Hang| Implement and fixing bug relate to Student function relate, implement test unit for registration|
-| Name          |                                                                                                |
+| Cong Si Van   | Implemented the ProfessorAccount and Section classes; added data validation features (preventing duplicate ID registrations and ensuring only valid data is accepted); improved overall system functionality; and contributed to comprehensive testing to ensure reliability in real-world scenarios. |                                                                                             
 
 ---
 
