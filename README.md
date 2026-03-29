@@ -197,7 +197,7 @@ exit
 | ------------- | ---------------------------------------------------------------------------------------------- |
 | Name          |                                                                                                |
 | Name          |                                                                                                |
-| Name          |                                                                                                |
+| Minh Long Hang| Implement and fixing bug relate to Student function relate, implement test unit for registration|
 | Name          |                                                                                                |
 
 ---
