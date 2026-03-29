@@ -38,10 +38,11 @@ The system is structured into multiple packages:
 
 Contains core domain classes:
 
-* **Account (abstract)**
+* **Account (abstract)** — implements **`Deactivatable`**
 
   * Base class for all users
-  * Handles login, status, and account details
+  * Handles login, activation state, email/password updates, and contact display
+
 
 * **StudentAccount**
 
@@ -56,12 +57,13 @@ Contains core domain classes:
 
   * Manages teaching sections
   * Calculates teaching load
+  * Schedule conflict checks when assigning additional sections
 
 * **Course**
 
   * Stores course details and prerequisites
 
-* **Section**
+* **Section** — implements **`Deactivatable`**
 
   * Represents a course offering
   * Contains:
@@ -78,7 +80,12 @@ Contains core domain classes:
 
 ---
 
-### 3. `exceptions`
+### 3. `interfaces`
+
+* **Deactivatable** — `activate`, `deactivate`, `isActive`, `getStatus` (implemented by **`Account`** and **`Section`**)
+---
+
+### 4. `exceptions`
 
 Custom exceptions used for validation:
 
@@ -91,9 +98,9 @@ These exceptions ensure that invalid operations do not crash the system and prov
 
 ---
 
-### 4. `ui`
+### 5. `ui`
 
-* **Menu**
+* **Menu** - console I/O
 
   * Handles all user interaction
   * Displays menus and processes input
@@ -108,14 +115,11 @@ These exceptions ensure that invalid operations do not crash the system and prov
   * UI (`Menu`) handles input/output
   * `RegistrationSystem` handles logic
   * Model classes encapsulate behavior
+  
 
 * Data integrity:
 
   * Relationships between students, sections, and professors are maintained consistently
-
-* Validation:
-
-  * Enrollment checks are handled inside `StudentAccount`
 
 * Scalability:
 
@@ -162,6 +166,18 @@ java main.Main
 
 ## Usage
 
+loadSampleData() runs at startup (via Menu).
+
+Sample logins
+| Role	    | ID	|Password|
+| Student	  |s1	  |pass    |
+| Student	  |s2	  |pass    |
+| Professor |p1	  |pass    |
+
+Admin Login
+ID - admin
+Password - admin123
+
 When the program starts, the main menu is displayed. Users can:
 
 * Log in as a student or professor
@@ -172,12 +188,14 @@ When the program starts, the main menu is displayed. Users can:
 
 ### Key Features
 
+* Role-based menus
 * Authentication system
-* Section enrollment with validation:
+* Enrollment with validation:
 
   * Schedule conflicts
   * Prerequisite checks
   * Capacity limits
+  * Inactive section
 * Dynamic listing of sections by course or term
 * System summary reporting
 
@@ -198,7 +216,7 @@ exit
 | Name          |                                                                                                |
 | Name          |                                                                                                |
 | Name          |                                                                                                |
-| Name          |                                                                                                |
+|  Yin Phyu Phyu Thaw | Designed the overall system architecture and UML diagram. Implemented core functionality for Account, Course and Registration System classes. Contributed to and debugged the Menu (UI) and improved overall system stability. Identified and removed dead code, and implemented an exit-anywhere feature for better user experience. Contributed to writing and organizing the README file. |
 
 ---
 
@@ -214,7 +232,5 @@ exit
 
 * GUI interface instead of console-based UI
 * Persistent storage (database or file system)
-* More advanced scheduling features
-* Admin-level controls and analytics
 
 ---
