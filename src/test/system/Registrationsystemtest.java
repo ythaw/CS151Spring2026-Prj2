@@ -1,10 +1,8 @@
 package test.system;
 
-import exceptions.CourseFullException;
 import exceptions.InactiveEntityException;
-import exceptions.PrerequisiteNotMetException;
-import exceptions.ScheduleConflictException;
 import model.*;
+import system.RegistrationSystem;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -234,17 +232,17 @@ class RegistrationSystemTest {
     // ─────────────────────────────────────────────────────────────
 
     @Test
-    void dropStudentFromSection_enrolledStudent_dropsSuccessfully() {
+    void dropStudentFromSection_enrolledStudent_dropsSuccessfully() throws InactiveEntityException {
         system.enrollStudentInSection("stu1", "SEC1");
         system.dropStudentFromSection("stu1", "SEC1");
         assertFalse(system.getSectionById("SEC1").isStudentEnrolled(student));
     }
 
     @Test
-    void dropStudentFromSection_notEnrolled_doesNotThrow() {
-        // Should print a message but not propagate an exception to the caller
-        assertDoesNotThrow(() -> system.dropStudentFromSection("stu1", "SEC1"));
-    }
+    void dropStudentFromSection_notEnrolled_throwsInactiveEntityException() {
+        assertThrows(InactiveEntityException.class,
+                () -> system.dropStudentFromSection("stu1", "SEC1"));
+        }
 
     // ─────────────────────────────────────────────────────────────
     // assignProfessorToSection
@@ -419,5 +417,78 @@ class RegistrationSystemTest {
     @Test
     void getAllSections_returnsAddedSections() {
         assertEquals(1, system.getAllSections().size());
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // MAX_INSTANCES (100) — RegistrationSystem requirement
+    // ─────────────────────────────────────────────────────────────
+
+    private static final int MAX_INSTANCES = 100;
+
+    @Test
+    void registerStudent_atMaxInstances_rejects101st() {
+        RegistrationSystem sys = new RegistrationSystem();
+        for (int i = 0; i < MAX_INSTANCES; i++) {
+            sys.registerStudent(new StudentAccount(
+                    "s" + i, "Student" + i, "s" + i + "@test.edu", "pass", "CS"));
+        }
+        assertEquals(MAX_INSTANCES, sys.getAllStudents().size());
+
+        sys.registerStudent(new StudentAccount(
+                "s_extra", "Should Not Add", "extra@test.edu", "pass", "CS"));
+
+        assertEquals(MAX_INSTANCES, sys.getAllStudents().size());
+        assertFalse(sys.accountIdExists("s_extra"));
+    }
+
+    @Test
+    void registerProfessor_atMaxInstances_rejects101st() {
+        RegistrationSystem sys = new RegistrationSystem();
+        for (int i = 0; i < MAX_INSTANCES; i++) {
+            sys.registerProfessor(new ProfessorAccount(
+                    "p" + i, "Prof" + i, "p" + i + "@test.edu", "pass", "CS"));
+        }
+        assertEquals(MAX_INSTANCES, sys.getAllProfessors().size());
+
+        sys.registerProfessor(new ProfessorAccount(
+                "p_extra", "Should Not Add", "extra@test.edu", "pass", "CS"));
+
+        assertEquals(MAX_INSTANCES, sys.getAllProfessors().size());
+        assertFalse(sys.accountIdExists("p_extra"));
+    }
+
+    @Test
+    void addCourse_atMaxInstances_rejects101st() {
+        RegistrationSystem sys = new RegistrationSystem();
+        for (int i = 0; i < MAX_INSTANCES; i++) {
+            String code = String.format("C%03d", i);
+            sys.addCourse(new Course(code, "Title " + i, 3, "Description"));
+        }
+        assertEquals(MAX_INSTANCES, sys.getAllCourses().size());
+
+        sys.addCourse(new Course("C_EXTRA", "Should Not Add", 3, "N/A"));
+
+        assertEquals(MAX_INSTANCES, sys.getAllCourses().size());
+        assertNull(sys.getCourseByCode("C_EXTRA"));
+    }
+
+    @Test
+    void addSection_atMaxInstances_rejects101st() {
+        RegistrationSystem sys = new RegistrationSystem();
+        Course course = new Course("CS100", "Shared", 3, "For sections");
+        ProfessorAccount prof = new ProfessorAccount("prof0", "T", "t@test.edu", "pass", "CS");
+        Schedule schedule = new Schedule(Set.of("Tuesday", "Thursday"), 480, 570, "Room A");
+        sys.addCourse(course);
+        sys.registerProfessor(prof);
+
+        for (int i = 0; i < MAX_INSTANCES; i++) {
+            sys.addSection(new Section("SEC" + i, course, prof, schedule, "Fall", 30));
+        }
+        assertEquals(MAX_INSTANCES, sys.getAllSections().size());
+
+        sys.addSection(new Section("SEC_EXTRA", course, prof, schedule, "Fall", 30));
+
+        assertEquals(MAX_INSTANCES, sys.getAllSections().size());
+        assertNull(sys.getSectionById("SEC_EXTRA"));
     }
 }
